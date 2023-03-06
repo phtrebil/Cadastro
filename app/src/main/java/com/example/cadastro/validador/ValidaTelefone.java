@@ -27,7 +27,7 @@ public class ValidaTelefone {
         return true;
     }
 
-    public boolean estaValido(){
+    public boolean estaValidotelefone(){
         if(!validacaoPadrao.estaValido()) return false;
         String telefoneComDdd = campoTelefoneComDdd.getText().toString();
         if(!validaEntreDezOuOnzeDigitos(telefoneComDdd)) return false;

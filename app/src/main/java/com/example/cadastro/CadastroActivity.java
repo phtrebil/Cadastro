@@ -2,13 +2,12 @@ package com.example.cadastro;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.cadastro.formatadores.FormataTelefone;
 import com.example.cadastro.validador.ValidaCpf;
+import com.example.cadastro.validador.ValidaEmail;
 import com.example.cadastro.validador.ValidaTelefone;
 import com.example.cadastro.validador.Validador;
 import com.google.android.material.textfield.TextInputLayout;
@@ -41,21 +40,23 @@ public class CadastroActivity extends AppCompatActivity {
 
     private void configuraCampoEmail() {
         TextInputLayout textInputEmail = findViewById(R.id._layout_email);
-        adicionaValidacaoPadrao(textInputEmail);
+        EditText campoEmail = textInputEmail.getEditText();
+        final ValidaEmail validadorEmail = new ValidaEmail(textInputEmail);
+        campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+                validadorEmail.estaValido();
+            }
+        });
     }
 
+
     private void configuraCampoTelefoneComDdd() {
-        TextInputLayout textInputTelefoneComDdd = findViewById(R.id._layout_telefone);
-        final EditText campoTelefoneComDdd = textInputTelefoneComDdd.getEditText();
-        final ValidaTelefone validador = new ValidaTelefone(textInputTelefoneComDdd);
-        final FormataTelefone formatador = new FormataTelefone();
-        campoTelefoneComDdd.setOnFocusChangeListener((v, hasFocus) -> {
-            String telefoneComDdd = campoTelefoneComDdd.getText().toString();
-            if(hasFocus){
-                String telefoneComDddSemFormatacao = formatador.remove(telefoneComDdd);
-                campoTelefoneComDdd.setText(telefoneComDddSemFormatacao);
-            } else {
-                validador.estaValido();
+        TextInputLayout textInputEmail = findViewById(R.id._layout_telefone);
+        EditText campoEmail = textInputEmail.getEditText();
+        final ValidaTelefone validadorTelefone = new ValidaTelefone(textInputEmail);
+        campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
+            if(!hasFocus){
+               validadorTelefone.estaValidotelefone();
             }
         });
     }
