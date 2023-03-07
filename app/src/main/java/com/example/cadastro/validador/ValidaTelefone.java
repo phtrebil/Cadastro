@@ -5,17 +5,17 @@ import android.widget.EditText;
 import com.example.cadastro.formatadores.FormataTelefone;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class ValidaTelefone {
+public class ValidaTelefone implements Validador{
     public static final String DEVE_TER_DEZ_OU_ONZE_DIGITOS = "Telefone deve ter entre 10 a 11 dígitos";
     private final TextInputLayout textInputTelefoneComDdd;
     private final EditText campoTelefoneComDdd;
-    private final Validador validacaoPadrao;
+    private final ValidadorPadrao validacaoPadrao;
     private final FormataTelefone formatador = new FormataTelefone();
 
     public ValidaTelefone(TextInputLayout textInputTelefoneComDdd) {
         this.textInputTelefoneComDdd = textInputTelefoneComDdd;
         this.campoTelefoneComDdd = textInputTelefoneComDdd.getEditText();
-        this.validacaoPadrao = new Validador(textInputTelefoneComDdd);
+        this.validacaoPadrao = new ValidadorPadrao(textInputTelefoneComDdd);
     }
 
     private boolean validaEntreDezOuOnzeDigitos(String telefoneComDdd){
@@ -27,11 +27,13 @@ public class ValidaTelefone {
         return true;
     }
 
-    public boolean estaValidotelefone(){
+    @Override
+    public boolean estaValido(){
         if(!validacaoPadrao.estaValido()) return false;
         String telefoneComDdd = campoTelefoneComDdd.getText().toString();
-        if(!validaEntreDezOuOnzeDigitos(telefoneComDdd)) return false;
-        adicionaFormatacao(telefoneComDdd);
+        String telefoneComDddSemFormatacao = formatador.remove(telefoneComDdd);
+        if(!validaEntreDezOuOnzeDigitos(telefoneComDddSemFormatacao)) return false;
+        adicionaFormatacao(telefoneComDddSemFormatacao);
         return true;
     }
 

@@ -4,16 +4,16 @@ import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-public class ValidaEmail {
+public class ValidaEmail implements Validador{
 
     private final TextInputLayout textInputEmail;
     private final EditText campoEmail;
-    private final Validador validadorPadrao;
+    private final ValidadorPadrao validadorPadrao;
 
     public ValidaEmail(TextInputLayout textInputEmail) {
         this.textInputEmail = textInputEmail;
         this.campoEmail = this.textInputEmail.getEditText();
-        this.validadorPadrao = new Validador(this.textInputEmail);
+        this.validadorPadrao = new ValidadorPadrao(this.textInputEmail);
     }
 
     private boolean validaPadrao(String email){
@@ -24,10 +24,10 @@ public class ValidaEmail {
         return false;
     }
 
+    @Override
     public boolean estaValido(){
         if(!validadorPadrao.estaValido()) return false;
         String email = campoEmail.getText().toString();
-        if(!validaPadrao(email)) return false;
-        return true;
+        return validaPadrao(email);
     }
 }

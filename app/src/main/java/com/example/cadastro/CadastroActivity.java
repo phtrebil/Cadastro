@@ -2,7 +2,9 @@ package com.example.cadastro;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,20 +12,28 @@ import com.example.cadastro.validador.ValidaCpf;
 import com.example.cadastro.validador.ValidaEmail;
 import com.example.cadastro.validador.ValidaTelefone;
 import com.example.cadastro.validador.Validador;
+import com.example.cadastro.validador.ValidadorPadrao;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.caelum.stella.format.CPFFormatter;
 
 public class CadastroActivity extends AppCompatActivity {
 
     private static final String ERRO_FORMATAO_CPF = "erro formatação cpf";
+    private final List<Validador> validadores = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
         inicializaCampos();
+        
     }
+    
 
     private void inicializaCampos() {
         configuraCampoNomeCompleto();
@@ -31,6 +41,35 @@ public class CadastroActivity extends AppCompatActivity {
         configuraCampoTelefoneComDdd();
         configuraCampoEmail();
         configuraCampoSenha();
+        configuraBotaoCadastrar();
+    }
+
+    private void configuraBotaoCadastrar() {
+        Button botaoCadastrar = findViewById(R.id.botao_cadastrar);
+        botaoCadastrar.setOnClickListener(v -> {
+            boolean formularioEstaValido = validaTodosCampos();
+            if(formularioEstaValido){
+                cadastroRealizado();
+            }
+        });
+    }
+
+    private void cadastroRealizado() {
+        Toast.makeText(
+                CadastroActivity.this,
+                "Cadastro realizado com sucesso!",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean validaTodosCampos() {
+        boolean formularioEstaValido = true;
+        for (Validador validador :
+                validadores) {
+            if(!validador.estaValido()){
+                formularioEstaValido = false;
+            }
+        }
+        return formularioEstaValido;
     }
 
     private void configuraCampoSenha() {
@@ -56,7 +95,7 @@ public class CadastroActivity extends AppCompatActivity {
         final ValidaTelefone validadorTelefone = new ValidaTelefone(textInputEmail);
         campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
-               validadorTelefone.estaValidotelefone();
+               validadorTelefone.estaValido();
             }
         });
     }
@@ -95,10 +134,10 @@ public class CadastroActivity extends AppCompatActivity {
 
     private void adicionaValidacaoPadrao(final TextInputLayout textInputCampo) {
         final EditText campo = textInputCampo.getEditText();
-        final Validador validador = new Validador(textInputCampo);
+        final ValidadorPadrao validadorPadrao = new ValidadorPadrao(textInputCampo);
         campo.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                validador.estaValido();
+                validadorPadrao.estaValido();
             }
         });
     }
