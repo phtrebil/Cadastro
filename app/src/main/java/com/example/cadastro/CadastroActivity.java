@@ -81,6 +81,7 @@ public class CadastroActivity extends AppCompatActivity {
         TextInputLayout textInputEmail = findViewById(R.id._layout_email);
         EditText campoEmail = textInputEmail.getEditText();
         final ValidaEmail validadorEmail = new ValidaEmail(textInputEmail);
+        validadores.add(validadorEmail);
         campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 validadorEmail.estaValido();
@@ -90,9 +91,10 @@ public class CadastroActivity extends AppCompatActivity {
 
 
     private void configuraCampoTelefoneComDdd() {
-        TextInputLayout textInputEmail = findViewById(R.id._layout_telefone);
-        EditText campoEmail = textInputEmail.getEditText();
-        final ValidaTelefone validadorTelefone = new ValidaTelefone(textInputEmail);
+        TextInputLayout textInputTelefone = findViewById(R.id._layout_telefone);
+        EditText campoEmail = textInputTelefone.getEditText();
+        final ValidaTelefone validadorTelefone = new ValidaTelefone(textInputTelefone);
+        validadores.add(validadorTelefone);
         campoEmail.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                validadorTelefone.estaValido();
@@ -107,6 +109,7 @@ public class CadastroActivity extends AppCompatActivity {
         final EditText campoCpf = textInputCpf.getEditText();
         final CPFFormatter formatador = new CPFFormatter();
         final ValidaCpf validador = new ValidaCpf(textInputCpf);
+        validadores.add(validador);
         campoCpf.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 removeFormatacao(formatador, campoCpf);
@@ -135,6 +138,7 @@ public class CadastroActivity extends AppCompatActivity {
     private void adicionaValidacaoPadrao(final TextInputLayout textInputCampo) {
         final EditText campo = textInputCampo.getEditText();
         final ValidadorPadrao validadorPadrao = new ValidadorPadrao(textInputCampo);
+        validadores.add(validadorPadrao);
         campo.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 validadorPadrao.estaValido();
