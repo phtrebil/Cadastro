@@ -16,5 +16,5 @@ a biblioteca stella da alura. O telefone também exige número corredo caractere
 | -------------  | --- |
 | :sparkles: Nome        | **Cadastro**
 | :label: Tecnologias | Java, textImputLayout, Stella
-| :rocket: URL         |https://github.com/phtrebil/Busca_Not-cias
-| :fire: Desafio     |https://github.com/phtrebil/Busca_Not-cias
+| :rocket: URL         |https://github.com/phtrebil/Cadastro
+| :fire: Desafio     |https://github.com/phtrebil/Cadastro
